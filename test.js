@@ -37,7 +37,7 @@ test('readGlobPromise()', function(t) {
     t.ok(err.code, 'should be rejected when globbing fails.');
   });
 
-  readGlob('node_modules', {ignoreDir: false})
+  readGlob('node_modules', {nodir: false})
   .catch(function(err) {
     t.equal(err.code, 'EISDIR', 'should be rejected when it fails to read the target.');
   });

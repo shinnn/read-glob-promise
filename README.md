@@ -6,7 +6,7 @@
 [![Dependency Status](https://david-dm.org/shinnn/read-glob-promise.svg)](https://david-dm.org/shinnn/read-glob-promise)
 [![devDependency Status](https://david-dm.org/shinnn/read-glob-promise/dev-status.svg)](https://david-dm.org/shinnn/read-glob-promise#info=devDependencies)
 
-[Promise] version of [read-glob](http://nodejs.org/api/fs.html#fs_fs_readdir_path_callback):
+[Promise] version of [read-glob](https://github.com/shinnn/node-read-glob):
 
 > Search files with glob pattern and read them asynchronously
 
@@ -68,18 +68,9 @@ readGlob('{foo,bar.baz}.txt', {nobrace: true})
 
 #### options
 
-The option object will be directly passed to [glob](https://github.com/isaacs/node-glob) and [fs.readFile], or the encoding string sets the encoding of [fs.readFile].
+The option object will be directly passed to [glob](https://github.com/isaacs/node-glob#options) and [fs.readFile], or the encoding string sets the encoding of [fs.readFile].
 
-Additionally, [`ignoreDir` option](#optionsignoredir) is available and enabled by default.
-
-##### options.ignoreDir
-
-Type: `Boolean`  
-Default: `true`
-
-Excludes the directories from matched paths. It prevents `EISDIR` error when reading files.
-
-`false` disables this safty and improves globbing performance a bit.
+Unlike the original API, glob's `nodir` option is `true` by default.
 
 ## License
 
