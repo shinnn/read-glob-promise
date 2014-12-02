@@ -2,9 +2,10 @@
 
 var readGlob = require('./');
 var test = require('tape');
+var xtend = require('xtend');
 
 test('readGlobPromise()', function(t) {
-  t.plan(9);
+  t.plan(10);
 
   readGlob('.git{a,i}*e{,s}')
   .then(function(bufs) {
@@ -14,16 +15,24 @@ test('readGlobPromise()', function(t) {
     ], 'should read files.');
   });
 
-  readGlob('.git{a,a}ttributes', {
+  var options = {
     nounique: true,
     noglobstar: true,
     encoding: 'hex'
-  })
+  };
+
+  var optionsClone = xtend(options);
+
+  readGlob('.git{a,a}ttributes', options)
   .then(function(contents) {
     t.deepEqual(contents, [
       new Buffer('* text=auto\n').toString('hex'),
       new Buffer('* text=auto\n').toString('hex')
     ], 'should support minimatch, glob and fs.readFile options.');
+    t.deepEqual(
+      options, optionsClone,
+      'should not modify the original option object.'
+    );
   });
 
   readGlob('__this__glob__pattern__will__not__match__anything__', null)
