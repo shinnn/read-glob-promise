@@ -5,10 +5,11 @@ var test = require('tape');
 var xtend = require('xtend');
 
 test('readGlobPromise()', function(t) {
-  t.plan(10);
+  t.plan(11);
 
-  readGlob('.git{a,i}*e{,s}')
-  .then(function(bufs) {
+  t.equal(readGlob.name, 'readGlobPromise', 'should have a function name.');
+
+  readGlob('.git{a,i}*e{,s}').then(function(bufs) {
     t.deepEqual(bufs, [
       new Buffer('* text=auto\n'),
       new Buffer('node_modules\ncoverage\n')
@@ -23,8 +24,7 @@ test('readGlobPromise()', function(t) {
 
   var optionsClone = xtend(options);
 
-  readGlob('.git{a,a}ttributes', options)
-  .then(function(contents) {
+  readGlob('.git{a,a}ttributes', options).then(function(contents) {
     t.deepEqual(contents, [
       new Buffer('* text=auto\n').toString('hex'),
       new Buffer('* text=auto\n').toString('hex')
@@ -35,39 +35,39 @@ test('readGlobPromise()', function(t) {
     );
   });
 
-  readGlob('__this__glob__pattern__will__not__match__anything__', null)
-  .then(function(bufs) {
-    t.deepEqual(
-      bufs, [], 'should be fulfilled with an empty array when it reads nothing.');
+  readGlob('__this_glob_pattern_will_not_match_anything__', null).then(function(bufs) {
+    t.deepEqual(bufs, [], 'should be fulfilled with an empty array when it reads nothing.');
   });
 
-  readGlob('/**/*', 'utf8')
-  .catch(function(err) {
+  readGlob('/**/*', 'utf8').catch(function(err) {
     t.ok(err.code, 'should be rejected when globbing fails.');
   });
 
-  readGlob('node_modules', {nodir: false})
-  .catch(function(err) {
+  readGlob('node_modules', {nodir: false}).catch(function(err) {
     t.equal(err.code, 'EISDIR', 'should be rejected when it fails to read the target.');
   });
 
   t.throws(
-    readGlob.bind(null, '*', 1), /TypeError.*arg/,
-    'should throw a type error when the second argument is not a string, an object or a function.'
+    readGlob.bind(null, '*', 1),
+    /TypeError.*arg/,
+    'should throw a type error when the second argument is not a string, object or function.'
   );
 
   t.throws(
-    readGlob.bind(null, 'index.js', 'utf7'), /Error.*encoding/,
+    readGlob.bind(null, 'index.js', 'utf7'),
+    /Error.*encoding/,
     'should throw an error when the encoding is unknown.'
   );
 
   t.throws(
-    readGlob.bind(null, true, {}), /TypeError.*glob/,
+    readGlob.bind(null, true, {}),
+    /TypeError.*glob/,
     'should throw a type error when the first argument is not a string.'
   );
 
   t.throws(
-    readGlob.bind(null), /TypeError.*glob/,
+    readGlob.bind(null),
+    /TypeError.*glob/,
     'should throw a type error when it takes no arguments.'
   );
 });
