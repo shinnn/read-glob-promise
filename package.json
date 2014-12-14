@@ -36,8 +36,8 @@
     "thenable"
   ],
   "dependencies": {
-    "es6-promise": "^2.0.0",
-    "read-glob": "^2.0.0"
+    "read-glob": "^2.0.0",
+    "wrap-promise": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^0.10.0",
